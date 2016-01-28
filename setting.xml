@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project>
+<databaseURL>jdbc:sqlserver://localhost:1433;databaseName=UAPTRANSLATION</databaseURL>
+<databaseUser>sa</databaseUser>
+<databasePassword>sasasa</databasePassword>
+<fromExcelSimp>C:/uap/fromExcelSimp</fromExcelSimp>
+<toDatabaseDir>C:/uap/toDatabaseDir/</toDatabaseDir>
+<mailReceivers>zhangg@yonyou.com;</mailReceivers>
+<models>
+<Model name = "develop">
+<remoteFromPath>D:/uaptrans/remoteFromPath</remoteFromPath>
+<remoteToPath>D:/uaptrans/remoteToPath/develop</remoteToPath>
+<localTranPath>C:/uap/local/develop</localTranPath>
+<localBackupPath>C:/uap/localBackupPath/develop</localBackupPath>
+</Model>
+</models>
+</Project>
