@@ -59,6 +59,10 @@ public class DBHelper {
 		sql = "truncate table trans_file";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
+
+		sql = "truncate table trans_simpchn";
+		ps = ct.prepareStatement(sql);
+		ps.execute();
 	}
 
 	// 关闭资源的方法
@@ -82,6 +86,12 @@ public class DBHelper {
 		}
 	}
 
+	/**
+	 * 
+	 * @param fileMd5
+	 * @return
+	 * @throws Exception
+	 */
 	private HashMap<String, Trans_wordsVO> getPreTrans(String fileMd5) throws Exception {
 		String sql = "select distinct trans_simpchn.md5, trans_simpchn.simpchn, trans_words.cTranslation from trans_simpchn, trans_words where trans_simpchn.simpchn = trans_words.simpchn and trans_simpchn.filemd5 = ?";
 		HashMap<String, Trans_wordsVO> hashMap = new HashMap<>();
@@ -101,6 +111,11 @@ public class DBHelper {
 		return hashMap;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
 	public Trans_simpchnVO[] getSimpchnVOs() throws SQLException {
 		String sql = "select filemd5, sheetname,simpchn from trans_simpchn";
 		ps = ct.prepareStatement(sql);
@@ -159,28 +174,16 @@ public class DBHelper {
 
 		Trans_simpchnVO[] bigList = hashMap2.values().toArray(new Trans_simpchnVO[hashMap2.size()]);
 
-		String sql = "delete from trans_file where filemd5 in (select filemd5 from trans_simpchn where simpchn = ?)";
+		String sql = "delete from trans_file where filemd5 in (select filemd5 from trans_simpchn)";
 		ps = ct.prepareStatement(sql);
-		for (Trans_simpchnVO trans_simpchnVO : bigList) {
-			setValues(ps, trans_simpchnVO.getSimpchn());
-			ps.addBatch();
-		}
 		ps.executeBatch();
 
-		sql = "delete from trans_sheets where filemd5 in (select filemd5 from trans_simpchn where simpchn = ?)";
+		sql = "delete from trans_sheets where filemd5 not in (select filemd5 from trans_file)";
 		ps = ct.prepareStatement(sql);
-		for (Trans_simpchnVO trans_simpchnVO : bigList) {
-			setValues(ps, trans_simpchnVO.getSimpchn());
-			ps.addBatch();
-		}
 		ps.executeBatch();
 
-		sql = "delete from trans_simpchn where  simpchn = ?";
+		sql = "delete from trans_simpchn";
 		ps = ct.prepareStatement(sql);
-		for (Trans_simpchnVO trans_simpchnVO : bigList) {
-			setValues(ps, trans_simpchnVO.getSimpchn());
-			ps.addBatch();
-		}
 		ps.executeBatch();
 
 		sql = "delete from trans_words where md5 = ?";
