@@ -59,8 +59,7 @@ public class Main {
 
 		} catch (Exception e) {
 			MailUtil mailUtil = new MailUtil();
-			mailUtil.send(e.toString());
-			e.printStackTrace();
+			mailUtil.send(e.getMessage());
 		}
 	}
 }

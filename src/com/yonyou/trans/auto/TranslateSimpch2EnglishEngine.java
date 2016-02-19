@@ -66,12 +66,15 @@ public class TranslateSimpch2EnglishEngine extends AbstractEngine {
 		for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
 			HSSFRow hssfRow = hssfSheet.getRow(rowNum);
 			if (hssfRow != null) {
-
+				int englishrownumber = 4;
 				// HSSFCell filePah = hssfRow.getCell(0);
 				// HSSFCell fileName = hssfRow.getCell(1);
 				// HSSFCell resId = hssfRow.getCell(2);
 				// HSSFCell simpchn = hssfRow.getCell(3);
-				HSSFCell english = hssfRow.getCell(4);
+				HSSFCell english = hssfRow.getCell(englishrownumber);
+				if (english == null) {
+					english = hssfRow.createCell(englishrownumber);
+				}
 				// HSSFCell tradchn = hssfRow.getCell(5);
 				String word = trans.get(rowNum);
 				if (word != null) {
