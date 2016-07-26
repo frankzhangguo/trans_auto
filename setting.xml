@@ -12,6 +12,14 @@
 <remoteToPath>D:/uaptrans/remoteToPath/develop</remoteToPath>
 <localTranPath>C:/uap/local/develop</localTranPath>
 <localBackupPath>C:/uap/localBackupPath/develop</localBackupPath>
+<weekday>2</weekday>
+</Model>
+<Model name = "develop2">
+<remoteFromPath>D:/uaptrans/remoteFromPath</remoteFromPath>
+<remoteToPath>D:/uaptrans/remoteToPath/develop</remoteToPath>
+<localTranPath>C:/uap/local/develop</localTranPath>
+<localBackupPath>C:/uap/localBackupPath/develop</localBackupPath>
+<weekday>2</weekday>
 </Model>
 </models>
 </Project>

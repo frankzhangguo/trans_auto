@@ -17,6 +17,7 @@ import com.yonyou.trans.auto.model.SheetRowVO;
 import com.yonyou.trans.auto.model.Trans_fileVO;
 import com.yonyou.trans.auto.model.Trans_sheetsVO;
 import com.yonyou.trans.auto.model.Trans_simpchnVO;
+import com.yonyou.trans.auto.model.Trans_specialVO;
 import com.yonyou.trans.auto.model.Trans_wordsVO;
 
 public class DBHelper {
@@ -117,7 +118,7 @@ public class DBHelper {
 	 * @throws SQLException
 	 */
 	public Trans_simpchnVO[] getSimpchnVOs() throws SQLException {
-		String sql = "select filemd5, sheetname,simpchn from trans_simpchn";
+		String sql = "select  distinct trans_simpchn.simpchn, trans_file.model from trans_simpchn join trans_file on trans_simpchn.filemd5 =  trans_file.filemd5";
 		ps = ct.prepareStatement(sql);
 
 		List<Trans_simpchnVO> resultSet = new ArrayList<Trans_simpchnVO>();
@@ -125,9 +126,9 @@ public class DBHelper {
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			Trans_simpchnVO simpchnVO = new Trans_simpchnVO();
-			simpchnVO.setFilemd5(rs.getString(1));
-			simpchnVO.setSheetname(rs.getString(2));
-			simpchnVO.setSimpchn(rs.getString(3));
+
+			simpchnVO.setSimpchn(rs.getString(1));
+			simpchnVO.setSheetname(rs.getString(2));// ΩË”√sheetname
 			resultSet.add(simpchnVO);
 		}
 		return resultSet.toArray(new Trans_simpchnVO[resultSet.size()]);
@@ -176,15 +177,15 @@ public class DBHelper {
 
 		String sql = "delete from trans_file where filemd5 in (select filemd5 from trans_simpchn)";
 		ps = ct.prepareStatement(sql);
-		ps.executeBatch();
+		ps.execute();
 
 		sql = "delete from trans_sheets where filemd5 not in (select filemd5 from trans_file)";
 		ps = ct.prepareStatement(sql);
-		ps.executeBatch();
+		ps.execute();
 
 		sql = "delete from trans_simpchn";
 		ps = ct.prepareStatement(sql);
-		ps.executeBatch();
+		ps.execute();
 
 		sql = "delete from trans_words where md5 = ?";
 		ps = ct.prepareStatement(sql);
@@ -200,6 +201,25 @@ public class DBHelper {
 		for (Trans_simpchnVO trans_simpchnVO : bigList) {
 			String md5 = MD5Utl.Bit16(trans_simpchnVO.getSimpchn());
 			setValues(ps, md5, trans_simpchnVO.getSimpchn(), trans_simpchnVO.getEnglish());
+			ps.addBatch();
+		}
+		ps.executeBatch();
+
+	}
+
+	public void insertSpecialTrans(HashMap<String, List<Trans_specialVO>> hashMap) throws Exception {
+		Iterator<String> iterator = hashMap.keySet().iterator();
+		List<Trans_specialVO> bList = new ArrayList<Trans_specialVO>();
+		while (iterator.hasNext()) {
+			String sheetname = iterator.next();
+			bList.addAll(hashMap.get(sheetname));
+		}
+
+		String sql = "insert trans_special(module , location , graphic , filename , resid , sheet , source , correct_translation , old_translation , reported_by ) values(?,?,?,?,?,?,?,?,?,?)";
+		ps = ct.prepareStatement(sql);
+		for (Trans_specialVO trans_simpchnVO : bList) {
+			setValues(ps, trans_simpchnVO.getModule(), trans_simpchnVO.getLocation(), trans_simpchnVO.getGraphic(), trans_simpchnVO.getFile(), trans_simpchnVO.getResid(), trans_simpchnVO.getSheet(),
+					trans_simpchnVO.getSource(), trans_simpchnVO.getCorrect_translation(), trans_simpchnVO.getOld_translation(), trans_simpchnVO.getReported_by());
 			ps.addBatch();
 		}
 		ps.executeBatch();
@@ -253,7 +273,7 @@ public class DBHelper {
 		setValues(ps, fileVO.getFilemd5(), fileVO.getFilename(), fileVO.getPath(), fileVO.getModel());
 		ps.execute();
 
-		sql = "insert into trans_sheets (filemd5, sheetname, rowid, simpchn, english, md5) values (?,?,?,?,?,?)";
+		sql = "insert into trans_sheets (filemd5, sheetname, rowid, simpchn, english, md5, resid) values (?,?,?,?,?,?,?)";
 		ps = ct.prepareStatement(sql);
 
 		for (Trans_sheetsVO trans_sheetsVO : sheetsVOs) {
@@ -261,7 +281,7 @@ public class DBHelper {
 			if (rowVOs != null && rowVOs.size() > 0) {
 				for (SheetRowVO sheetRowVO : rowVOs) {
 					String md5 = MD5Utl.Bit16(sheetRowVO.getSimpchn());
-					setValues(ps, trans_sheetsVO.getFilemd5(), trans_sheetsVO.getSheetname(), sheetRowVO.getRowNum(), sheetRowVO.getSimpchn(), sheetRowVO.getEnglish(), md5);
+					setValues(ps, trans_sheetsVO.getFilemd5(), trans_sheetsVO.getSheetname(), sheetRowVO.getRowNum(), sheetRowVO.getSimpchn(), sheetRowVO.getEnglish(), md5, sheetRowVO.getResId());
 					ps.addBatch();
 				}
 			}
@@ -323,6 +343,22 @@ public class DBHelper {
 		ps.execute();
 
 		sql = "update trans_sheets set english = (select top 1 cTranslation from trans_words where trans_sheets.md5 = trans_words.md5) where filemd5 = '" + fileVO.getFilemd5() + "'";
+		ps = ct.prepareStatement(sql);
+		ps.execute();
+
+		// Ãÿ ‚∑≠“Î
+		sql = "	update trans_sheets	";
+		sql = sql + "	   set english =	";
+		sql = sql + "	       (select top 1 correct_translation	";
+		sql = sql + "	          from trans_special	";
+		sql = sql + "	         where trans_sheets.resid = trans_special.resid	";
+		sql = sql + "	           and trans_sheets.simpchn = trans_special.source)	";
+		sql = sql + "	 where trans_sheets.resid in	";
+		sql = sql + "	       (select trans_special.resid	";
+		sql = sql + "	          from trans_special	";
+		sql = sql + "	         where trans_sheets.resid = trans_special.resid		";
+		sql = sql + "	           and trans_sheets.simpchn = trans_special.source)	";
+		sql = sql + "	   and trans_sheets.filemd5 = '" + fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 

@@ -44,6 +44,7 @@ public class Project {
 	private String fromExcelSimp;
 	private String toDatabaseDir;
 	private String mailReceivers;
+
 	private List<Model> modelsList;
 
 	public Project() {

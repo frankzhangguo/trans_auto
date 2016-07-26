@@ -68,9 +68,10 @@ public class ScheduledService {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				if (!isWeekend()) {
-					Main.main(null);
-				}
+				// if (!isWeekend()) {
+				boolean isSingleProcess = false;
+				Main.start(isSingleProcess);
+				// }
 			}
 		};
 		// ÏÂÎç2µã·­Òë

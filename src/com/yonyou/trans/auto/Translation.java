@@ -3,6 +3,7 @@ package com.yonyou.trans.auto;
 import java.io.File;
 import java.io.IOException;
 
+import com.yonyou.trans.auto.model.MailContents;
 import com.yonyou.trans.auto.model.Model;
 import com.yonyou.trans.auto.model.Project;
 import com.yonyou.trans.auto.model.Trans_fileVO;
@@ -23,6 +24,8 @@ public class Translation {
 		java.util.List<String> list = Tools.find(model.getLocalTranPath());
 		String[] numfiles = new String[list.size()];
 		numfiles = list.toArray(numfiles);
+
+		MailContents.addComments("翻译的文件数量：" + list.size());
 
 		for (String filePath : numfiles) {
 			Trans_fileVO fileVO = getFileVO(filePath);

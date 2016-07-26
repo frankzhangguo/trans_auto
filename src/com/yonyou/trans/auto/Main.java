@@ -4,23 +4,61 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.yonyou.trans.auto.model.MailContents;
 import com.yonyou.trans.auto.model.Model;
 import com.yonyou.trans.auto.model.Project;
 import com.yonyou.trans.tools.FileUtil;
 import com.yonyou.trans.tools.MailUtil;
+import com.yonyou.trans.tools.Tools;
 
 /**
  * @author Frank
  * 
  */
 public class Main {
-
 	/**
 	 * 翻译主入口
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		start(true);
+	}
+
+	/**
+	 * 只要有一个模块需要翻译， 就需要工作
+	 * 
+	 * @return
+	 */
+	public static boolean need2Work() {
+		Project project = Project.getProjectConfig();
+		List<Model> models = project.getModelsList();
+		for (Model model : models) {// 只要有一个模块需要翻译， 就需要工作
+			if (workday(model)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	/**
+	 * 
+	 * @param isSingleProcess
+	 */
+	public static void start(boolean isSingleProcess) {
+
+		if (!isSingleProcess) {
+			// 如果都不需要翻译， 就返回吧
+			if (!need2Work()) {
+				return;
+			}
+		}
+
+		// clear the contents for comments
+		MailContents.clearContents();
+
+		// start translation
 		Translation translation = new Translation();
 		Project project = Project.getProjectConfig();
 		try {
@@ -34,6 +72,15 @@ public class Main {
 			// 2：翻译
 			List<Model> models = project.getModelsList();
 			for (Model model : models) {
+				if (!isSingleProcess) {
+					if (!workday(model)) {
+						MailContents.addComments("模块名称：[" + model.getName() + "] 周" + Tools.getCurrentWeekday() + "不翻译");
+						continue;
+					}
+				}
+
+				MailContents.addComments("模块名称：" + model.getName());
+
 				// 2.1 删除本地的等待翻译的文件
 				FileUtil.deleteDirectory(model.getLocalTranPath(), false);
 				// 2.2 将远程的文件复制到本地
@@ -61,5 +108,25 @@ public class Main {
 			MailUtil mailUtil = new MailUtil();
 			mailUtil.send(e.getMessage());
 		}
+
+	}
+
+	/**
+	 * 
+	 * @param model
+	 * @return 是否该模块需要翻译
+	 */
+	public static boolean workday(Model model) {
+		String weekday = model.getWeekday();
+		if (weekday != null) {
+			String[] weekdays = weekday.split(",");
+			for (String workday : weekdays) {
+				Integer week = new Integer(workday);
+				if (Tools.getCurrentWeekday() == week.intValue()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

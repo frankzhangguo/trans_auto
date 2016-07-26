@@ -14,6 +14,7 @@ public class Model {
 	String remoteToPath;
 	String localTranPath;
 	String localBackupPath;
+	String weekday;
 
 	/**
 	 * 
@@ -55,6 +56,10 @@ public class Model {
 		return remoteToPath;
 	}
 
+	public String getWeekday() {
+		return weekday;
+	}
+
 	/**
 	 * @param localBackupPath
 	 *            the localBackupPath to set
@@ -93,5 +98,9 @@ public class Model {
 	 */
 	public void setRemoteToPath(String remoteToPath) {
 		this.remoteToPath = remoteToPath;
+	}
+
+	public void setWeekday(String weekday) {
+		this.weekday = weekday;
 	}
 }

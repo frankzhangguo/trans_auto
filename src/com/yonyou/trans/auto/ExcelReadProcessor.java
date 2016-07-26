@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.yonyou.trans.db.MD5Utl;
 
@@ -41,7 +42,13 @@ public abstract class ExcelReadProcessor<T> {
 			return "";
 		}
 
+		cell.setCellType(Cell.CELL_TYPE_STRING);
 		return MD5Utl.removeSpace(String.valueOf(cell.getStringCellValue()));
+	}
+
+	public String getValue(HSSFRow hssfRow, int cell) {
+		return getValue(hssfRow.getCell(cell));
+
 	}
 
 	/**
