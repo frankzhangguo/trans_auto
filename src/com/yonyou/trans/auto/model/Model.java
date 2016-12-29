@@ -15,6 +15,15 @@ public class Model {
 	String localTranPath;
 	String localBackupPath;
 	String weekday;
+	Integer colNum = new Integer(4);// 输出的语种列数 默认英文第4列
+
+	public Integer getColNum() {
+		return colNum;
+	}
+
+	public void setColNum(Integer colNum) {
+		this.colNum = colNum;
+	}
 
 	/**
 	 * 

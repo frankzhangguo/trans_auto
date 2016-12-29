@@ -1,9 +1,11 @@
-package com.yonyou.trans.auto;
+package com.yonyou.trans.auto.main;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.yonyou.trans.auto.Translation;
+import com.yonyou.trans.auto.WriteEntranslated2Excel;
 import com.yonyou.trans.auto.model.MailContents;
 import com.yonyou.trans.auto.model.Model;
 import com.yonyou.trans.auto.model.Project;
@@ -74,7 +76,8 @@ public class Main {
 			for (Model model : models) {
 				if (!isSingleProcess) {
 					if (!workday(model)) {
-						MailContents.addComments("模块名称：[" + model.getName() + "] 周" + Tools.getCurrentWeekday() + "不翻译");
+						MailContents
+								.addComments("模块名称：[" + model.getName() + "] 周" + Tools.getCurrentWeekday() + "不翻译");
 						continue;
 					}
 				}
@@ -96,7 +99,8 @@ public class Main {
 				FileUtil.copyDirectory(model.getLocalTranPath(), toPath);
 			}
 			// 3:将待翻译的写入EXCEL表,并发送邮件
-			{
+
+			if (true) {
 				// 3.1:删除原来的
 				FileUtil.deleteDirectory(project.getFromExcelSimp(), false);
 				// 3.2:写入新的数据,并发送邮件

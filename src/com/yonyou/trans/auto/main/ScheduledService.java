@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yonyou.trans.auto;
+package com.yonyou.trans.auto.main;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.yonyou.trans.auto.AbstractEngine;
+import com.yonyou.trans.auto.DBClearEngine;
 
 /**
  * @author Frank

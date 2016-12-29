@@ -218,8 +218,10 @@ public class DBHelper {
 		String sql = "insert trans_special(module , location , graphic , filename , resid , sheet , source , correct_translation , old_translation , reported_by ) values(?,?,?,?,?,?,?,?,?,?)";
 		ps = ct.prepareStatement(sql);
 		for (Trans_specialVO trans_simpchnVO : bList) {
-			setValues(ps, trans_simpchnVO.getModule(), trans_simpchnVO.getLocation(), trans_simpchnVO.getGraphic(), trans_simpchnVO.getFile(), trans_simpchnVO.getResid(), trans_simpchnVO.getSheet(),
-					trans_simpchnVO.getSource(), trans_simpchnVO.getCorrect_translation(), trans_simpchnVO.getOld_translation(), trans_simpchnVO.getReported_by());
+			setValues(ps, trans_simpchnVO.getModule(), trans_simpchnVO.getLocation(), trans_simpchnVO.getGraphic(),
+					trans_simpchnVO.getFile(), trans_simpchnVO.getResid(), trans_simpchnVO.getSheet(),
+					trans_simpchnVO.getSource(), trans_simpchnVO.getCorrect_translation(),
+					trans_simpchnVO.getOld_translation(), trans_simpchnVO.getReported_by());
 			ps.addBatch();
 		}
 		ps.executeBatch();
@@ -270,7 +272,7 @@ public class DBHelper {
 
 		String sql = "insert into trans_file (filemd5, filename, path, model) values (?,?,?,?)";
 		ps = ct.prepareStatement(sql);
-		setValues(ps, fileVO.getFilemd5(), fileVO.getFilename(), fileVO.getPath(), fileVO.getModel());
+		setValues(ps, fileVO.getFilemd5(), fileVO.getFilename(), fileVO.getPath(), fileVO.getModel().getName());
 		ps.execute();
 
 		sql = "insert into trans_sheets (filemd5, sheetname, rowid, simpchn, english, md5, resid) values (?,?,?,?,?,?,?)";
@@ -281,7 +283,8 @@ public class DBHelper {
 			if (rowVOs != null && rowVOs.size() > 0) {
 				for (SheetRowVO sheetRowVO : rowVOs) {
 					String md5 = MD5Utl.Bit16(sheetRowVO.getSimpchn());
-					setValues(ps, trans_sheetsVO.getFilemd5(), trans_sheetsVO.getSheetname(), sheetRowVO.getRowNum(), sheetRowVO.getSimpchn(), sheetRowVO.getEnglish(), md5, sheetRowVO.getResId());
+					setValues(ps, trans_sheetsVO.getFilemd5(), trans_sheetsVO.getSheetname(), sheetRowVO.getRowNum(),
+							sheetRowVO.getSimpchn(), sheetRowVO.getEnglish(), md5, sheetRowVO.getResId());
 					ps.addBatch();
 				}
 			}
@@ -293,7 +296,8 @@ public class DBHelper {
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 
-		sql = "delete trans_sheets where len(simpchn)-datalength(simpchn)+datalength(cast(simpchn as varchar(2000))) = 0 and filemd5 = '" + fileVO.getFilemd5() + "'";
+		sql = "delete trans_sheets where len(simpchn)-datalength(simpchn)+datalength(cast(simpchn as varchar(2000))) = 0 and filemd5 = '"
+				+ fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 
@@ -308,7 +312,8 @@ public class DBHelper {
 		ps.execute();
 
 		// ‘§∑≠“Î
-		sql = "update trans_simpchn set  SimpChn=replace(SimpChn,N'°°',N' ') collate Chinese_PRC_CI_AS_WS where filemd5 = '" + fileVO.getFilemd5() + "'";
+		sql = "update trans_simpchn set  SimpChn=replace(SimpChn,N'°°',N' ') collate Chinese_PRC_CI_AS_WS where filemd5 = '"
+				+ fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 
@@ -333,16 +338,19 @@ public class DBHelper {
 		}
 		ps.executeBatch();
 
-		sql = "delete from trans_simpchn where md5 in (select trans_words.md5 from trans_words) and filemd5 = '" + fileVO.getFilemd5() + "'";
+		sql = "delete from trans_simpchn where md5 in (select trans_words.md5 from trans_words) and filemd5 = '"
+				+ fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 
 		// ∑≠“Î
-		sql = "delete from trans_sheets where md5 not in (select md5 from trans_words) and filemd5 = '" + fileVO.getFilemd5() + "'";
+		sql = "delete from trans_sheets where md5 not in (select md5 from trans_words) and filemd5 = '"
+				+ fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 
-		sql = "update trans_sheets set english = (select top 1 cTranslation from trans_words where trans_sheets.md5 = trans_words.md5) where filemd5 = '" + fileVO.getFilemd5() + "'";
+		sql = "update trans_sheets set english = (select top 1 cTranslation from trans_words where trans_sheets.md5 = trans_words.md5) where filemd5 = '"
+				+ fileVO.getFilemd5() + "'";
 		ps = ct.prepareStatement(sql);
 		ps.execute();
 

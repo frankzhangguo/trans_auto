@@ -10,6 +10,8 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
+import com.yonyou.trans.auto.main.Main;
+
 public class NewTransWatcherService {
 
 	private final WatchService watcher;

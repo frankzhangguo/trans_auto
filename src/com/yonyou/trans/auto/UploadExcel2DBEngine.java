@@ -27,9 +27,11 @@ public class UploadExcel2DBEngine extends AbstractEngine {
 			return true;
 		} else {// 删除类似的文件(同一个路径下的， 同文件名）
 			sql = "delete from trans_sheets where filemd5 in(select filemd5 from trans_file where path = ? and filename = ? and model = ?)";
-			getSqlHelper().update(sql, getFileVO().getPath(), getFileVO().getFilename(), getFileVO().getModel());
+			getSqlHelper().update(sql, getFileVO().getPath(), getFileVO().getFilename(),
+					getFileVO().getModel().getName());
 			sql = "delete from trans_file where path = ? and filename = ? and model = ?";
-			getSqlHelper().update(sql, getFileVO().getPath(), getFileVO().getFilename(), getFileVO().getModel());
+			getSqlHelper().update(sql, getFileVO().getPath(), getFileVO().getFilename(),
+					getFileVO().getModel().getName());
 			return false;
 		}
 	}

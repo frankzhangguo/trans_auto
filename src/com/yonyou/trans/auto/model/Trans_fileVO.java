@@ -14,7 +14,7 @@ public class Trans_fileVO implements Serializable {
 	private String filename;
 	private Date lastdate;
 	private String runid;
-	private String model;
+	private Model model;
 	private File file;
 
 	private String path;
@@ -35,7 +35,7 @@ public class Trans_fileVO implements Serializable {
 		return lastdate;
 	}
 
-	public String getModel() {
+	public Model getModel() {
 		return model;
 	}
 
@@ -63,7 +63,7 @@ public class Trans_fileVO implements Serializable {
 		this.lastdate = lastdate;
 	}
 
-	public void setModel(String model) {
+	public void setModel(Model model) {
 		this.model = model;
 	}
 

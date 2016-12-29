@@ -29,7 +29,7 @@ public class Translation {
 
 		for (String filePath : numfiles) {
 			Trans_fileVO fileVO = getFileVO(filePath);
-			fileVO.setModel(model.getName());
+			fileVO.setModel(model);
 			if (fileVO != null) {
 				// 上传EXCEL表
 				AbstractEngine excel2dbEngine = new UploadExcel2DBEngine(fileVO);
@@ -82,6 +82,27 @@ public class Translation {
 			if (fileVO != null) {
 				// 上传EXCEL表
 				AbstractEngine excel2dbEngine = new UploadNewTrans2DBEngine(fileVO);
+				excel2dbEngine.start();
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param project
+	 * @throws Exception
+	 */
+	public void readNewWords(Project project) throws Exception {
+
+		java.util.List<String> list = Tools.find(project.getToDatabaseDir());
+		String[] numfiles = new String[list.size()];
+		numfiles = list.toArray(numfiles);
+
+		for (String filePath : numfiles) {
+			Trans_fileVO fileVO = getFileVO(filePath);
+			if (fileVO != null) {
+				// 上传EXCEL表
+				AbstractEngine excel2dbEngine = new WordExcel2DBEngine(fileVO);
 				excel2dbEngine.start();
 			}
 		}
