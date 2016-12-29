@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yonyou.trans.auto;
+package com.yonyou.trans.auto.processor;
 
 import java.io.File;
 import java.io.IOException;

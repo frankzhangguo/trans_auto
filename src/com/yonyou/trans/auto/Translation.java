@@ -3,6 +3,11 @@ package com.yonyou.trans.auto;
 import java.io.File;
 import java.io.IOException;
 
+import com.yonyou.trans.auto.engine.AbstractEngine;
+import com.yonyou.trans.auto.engine.TranslateSimpch2EnglishEngine;
+import com.yonyou.trans.auto.engine.UploadExcel2DBEngine;
+import com.yonyou.trans.auto.engine.UploadNewTrans2DBEngine;
+import com.yonyou.trans.auto.engine.WordExcel2DBEngine;
 import com.yonyou.trans.auto.model.MailContents;
 import com.yonyou.trans.auto.model.Model;
 import com.yonyou.trans.auto.model.Project;

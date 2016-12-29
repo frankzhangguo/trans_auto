@@ -1,4 +1,4 @@
-package com.yonyou.trans.auto;
+package com.yonyou.trans.auto.engine;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

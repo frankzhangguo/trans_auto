@@ -12,8 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.yonyou.trans.auto.AbstractEngine;
-import com.yonyou.trans.auto.DBClearEngine;
+import com.yonyou.trans.auto.engine.AbstractEngine;
+import com.yonyou.trans.auto.engine.DBClearEngine;
 
 /**
  * @author Frank

@@ -1,6 +1,7 @@
-package com.yonyou.trans.auto;
+package com.yonyou.trans.auto.engine;
 
 import com.yonyou.trans.auto.model.Trans_fileVO;
+import com.yonyou.trans.auto.processor.SimpchnExcelReadProcessor;
 
 public class UploadNewTrans2DBEngine extends AbstractEngine {
 

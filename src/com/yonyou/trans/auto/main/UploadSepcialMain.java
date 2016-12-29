@@ -3,8 +3,8 @@ package com.yonyou.trans.auto.main;
 import java.io.File;
 import java.io.IOException;
 
-import com.yonyou.trans.auto.AbstractEngine;
-import com.yonyou.trans.auto.UploadSpecial2DBEngine;
+import com.yonyou.trans.auto.engine.AbstractEngine;
+import com.yonyou.trans.auto.engine.UploadSpecial2DBEngine;
 import com.yonyou.trans.auto.model.Trans_fileVO;
 import com.yonyou.trans.db.MD5Utl;
 import com.yonyou.trans.tools.Tools;
