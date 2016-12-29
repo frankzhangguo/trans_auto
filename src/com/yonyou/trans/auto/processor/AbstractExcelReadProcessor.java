@@ -24,7 +24,7 @@ import com.yonyou.trans.db.MD5Utl;
  * @author Frank
  * @param <T>
  */
-public abstract class ExcelReadProcessor<T> {
+public abstract class AbstractExcelReadProcessor<T> {
 	private HSSFWorkbook workbook = null;
 	private boolean processHeader = false;
 	private InputStream inp = null;
@@ -35,7 +35,7 @@ public abstract class ExcelReadProcessor<T> {
 	 *            是否处理首行， true是处理， 就是没有首行， 全是数据
 	 * @throws IOException
 	 */
-	public ExcelReadProcessor(File file, boolean processHeader)
+	public AbstractExcelReadProcessor(File file, boolean processHeader)
 			throws IOException {
 		this.inp = new FileInputStream(file);
 		this.workbook = new HSSFWorkbook(inp);

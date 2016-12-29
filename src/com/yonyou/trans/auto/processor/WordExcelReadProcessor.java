@@ -8,7 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import com.yonyou.trans.auto.model.Trans_simpchnVO;
 
-public class WordExcelReadProcessor extends ExcelReadProcessor<Trans_simpchnVO> {
+public class WordExcelReadProcessor extends AbstractExcelReadProcessor<Trans_simpchnVO> {
 
 	public WordExcelReadProcessor(File file, boolean processHeader) throws IOException {
 		super(file, processHeader);

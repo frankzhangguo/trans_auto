@@ -12,10 +12,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import com.yonyou.trans.auto.model.Trans_simpchnVO;
 
 /**
- * @author Frank
- * 
+ * @author Frank ∂¡»°
  */
-public class SimpchnExcelReadProcessor extends ExcelReadProcessor<Trans_simpchnVO> {
+public class SimpchnExcelReadProcessor extends AbstractExcelReadProcessor<Trans_simpchnVO> {
 
 	public SimpchnExcelReadProcessor(File file, boolean processHeader) throws IOException {
 		super(file, processHeader);

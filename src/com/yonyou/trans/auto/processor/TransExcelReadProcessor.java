@@ -14,7 +14,7 @@ import com.yonyou.trans.auto.model.SheetRowVO;
 /**
  * @author Frank
  */
-public class TransExcelReadProcessor extends ExcelReadProcessor<SheetRowVO> {
+public class TransExcelReadProcessor extends AbstractExcelReadProcessor<SheetRowVO> {
 
 	public TransExcelReadProcessor(File file, boolean processHeader) throws IOException {
 		super(file, processHeader);

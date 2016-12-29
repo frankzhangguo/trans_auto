@@ -8,7 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import com.yonyou.trans.auto.model.Trans_fileVO;
 import com.yonyou.trans.auto.model.Trans_specialVO;
-import com.yonyou.trans.auto.processor.ExcelReadProcessor;
+import com.yonyou.trans.auto.processor.AbstractExcelReadProcessor;
 
 /**
  * @author Frank
@@ -31,7 +31,7 @@ public class UploadSpecial2DBEngine extends AbstractEngine {
 	 */
 	@Override
 	public boolean start() throws Exception {
-		ExcelReadProcessor<Trans_specialVO> excelReadProcessor = new ExcelReadProcessor<Trans_specialVO>(getFileVO().getFile(), false) {
+		AbstractExcelReadProcessor<Trans_specialVO> excelReadProcessor = new AbstractExcelReadProcessor<Trans_specialVO>(getFileVO().getFile(), false) {
 
 			@Override
 			public Trans_specialVO processHSSFRow(HSSFRow hssfRow) {
