@@ -100,7 +100,7 @@ public class Main {
 			}
 			// 3:将待翻译的写入EXCEL表,并发送邮件
 
-			if (true) {
+			if (false) {
 				// 3.1:删除原来的
 				FileUtil.deleteDirectory(project.getFromExcelSimp(), false);
 				// 3.2:写入新的数据,并发送邮件
